@@ -6,9 +6,9 @@
 "               Claudio Fleiner <claudio@fleiner.com>
 "               Yeti            (Add full CSS2, HTML4 support)
 "               Nikolai Weibull (Add CSS2 support)
-" URL:          https://github.com/vim-language-dept/css-syntax.vim
+" URL:          https://github.com/ahrefs/vim-styled-ppx/blob/main/syntax/styled-ppx-payload.vim
 " Maintainer:   Egor Chemokhonenko <egor.chemohonenko@ahrefs.com>
-" Last Change:  2022 Aug 22
+" Last Change:  09 Aug 2022
 
 " quit when a syntax file was already loaded
 if !exists("main_syntax")
