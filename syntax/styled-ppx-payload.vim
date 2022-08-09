@@ -445,7 +445,7 @@ syn match cssFontDescriptorAttr contained "U+\x\+-\x\+"
 
 syn match cssBraces contained "[{}]"
 syn match cssError contained "{@<>"
-syn region cssDefinition transparent matchgroup=cssBraces start='{' end='}' contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise fold
+" syn region cssDefinition transparent matchgroup=cssBraces start='{' end='}' contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise fold
 syn match cssBraceError "}"
 syn match cssAttrComma ","
 
@@ -473,8 +473,8 @@ syn region cssComment start="/\*" end="\*/" contains=@Spell fold
 syn match cssUnicodeEscape "\\\x\{1,6}\s\?"
 syn match cssSpecialCharQQ +\\\\\|\\"+ contained
 syn match cssSpecialCharQ +\\\\\|\\'+ contained
-syn region cssStringQQ start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=cssUnicodeEscape,cssSpecialCharQQ
-syn region cssStringQ start=+'+ skip=+\\\\\|\\'+ end=+'+ contains=cssUnicodeEscape,cssSpecialCharQ
+" syn region cssStringQQ start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=cssUnicodeEscape,cssSpecialCharQQ
+" syn region cssStringQ start=+'+ skip=+\\\\\|\\'+ end=+'+ contains=cssUnicodeEscape,cssSpecialCharQ
 
 " Vendor Prefix
 syn match cssVendor contained "-\(webkit\|moz\|o\|ms\)-"
@@ -490,11 +490,11 @@ syn match cssHacks contained /\(_\|*\)/
 " Attr Enhance
 " Some keywords are both Prop and Attr, so we have to handle them
 " cssPseudoClassId is hidden by cssAttrRegion, so we add it here. see #69
-syn region cssAttrRegion start=/:/ end=/\ze\(;\|)\|}\|{\)/ contained contains=cssPseudoClassId,css.*Attr,cssColor,cssImportant,cssValue.*,cssFunction,cssString.*,cssURL,cssComment,cssUnicodeEscape,cssVendor,cssError,cssAttrComma,cssNoise
+syn region cssAttrRegion start=/:/ end=/\ze\(;\|)\|}\|{\)/ contained contains=cssPseudoClassId,css.*Attr,cssColor,cssImportant,cssValue.*,cssFunction,cssString.*,cssURL,cssComment,cssUnicodeEscape,cssVendor,cssError,cssAttrComma,cssNoise,styledInterpolation      
 
 " Hack for transition
 " 'transition' has Props after ':'.
-syn region cssAttrRegion start=/transition\s*:/ end=/\ze\(;\|)\|}\)/ contained contains=css.*Prop,css.*Attr,cssColor,cssImportant,cssValue.*,cssFunction,cssString.*,cssURL,cssComment,cssUnicodeEscape,cssVendor,cssError,cssAttrComma,cssNoise
+syn region cssAttrRegion start=/transition\s*:/ end=/\ze\(;\|)\|}\)/ contained contains=css.*Prop,css.*Attr,cssColor,cssImportant,cssValue.*,cssFunction,cssString.*,cssURL,cssComment,cssUnicodeEscape,cssVendor,cssError,cssAttrComma,cssNoise,styledInterpolation 
 
 syn match cssAtKeyword /@\(font-face\|media\|keyframes\|import\|charset\|namespace\|page\|supports\)/
 
@@ -521,6 +521,13 @@ syn region cssAtRule start=/@namespace\>/ end=/\ze;/ contains=cssStringQ,cssStri
 " https://www.w3.org/TR/css3-conditional/#at-supports
 syn region cssAtRule start=/@supports\>/ end=/\ze{/ skipwhite skipnl contains=cssAtRuleLogical,cssAttrRegion,css.*Prop,cssValue.*,cssVendor,cssAtKeyword,cssComment nextgroup=cssDefinition
 
+" Interpolation
+syn region styledInterpolation start=+$(+ end=+)+ keepend contained contains=styledInterpolationModule
+syn match styledInterpolationModule "\<\u\(\w\|'\)*\( *\. *\u\(\w\|'\)*\)*" contained skipwhite skipempty
+
+" Styled ppx region
+syn region cssDefinition transparent matchgroup=cssBraces start=+"+ skip=+\\\\\|\\"+ end=+"+  contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise,styledInterpolation fold
+syn region cssDefinition transparent matchgroup=cssBraces start="{\z\([a-z_]*\)|" end="|\z1}" contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise,styledInterpolation fold
 
 " if main_syntax == "css"
 "   syn sync minlines=10
@@ -652,6 +659,7 @@ hi def link cssProp StorageClass
 hi def link cssAttr Constant
 hi def link cssUnitDecorators Number
 hi def link cssNoise Noise
+hi def link styledInterpolationModule Function
 
 let b:current_syntax = "css"
 
