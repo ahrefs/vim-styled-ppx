@@ -1,13 +1,14 @@
 " Vim syntax file
-" Language:     Cascading Style Sheets
+" Language:     Cascading Style Sheets with styled ppx interpolation support
 " Previous Contributor List:
+"               Jay Sitter <jay@jaysitter.com>
 "               Jules Wang      <w.jq0722@gmail.com>
 "               Claudio Fleiner <claudio@fleiner.com>
 "               Yeti            (Add full CSS2, HTML4 support)
 "               Nikolai Weibull (Add CSS2 support)
 " URL:          https://github.com/vim-language-dept/css-syntax.vim
-" Maintainer:   Jay Sitter <jay@jaysitter.com>
-" Last Change:  2021 Oct 20
+" Maintainer:   Egor Chemokhonenko <egor.chemohonenko@ahrefs.com>
+" Last Change:  2022 Aug 22
 
 " quit when a syntax file was already loaded
 if !exists("main_syntax")
@@ -473,8 +474,6 @@ syn region cssComment start="/\*" end="\*/" contains=@Spell fold
 syn match cssUnicodeEscape "\\\x\{1,6}\s\?"
 syn match cssSpecialCharQQ +\\\\\|\\"+ contained
 syn match cssSpecialCharQ +\\\\\|\\'+ contained
-" syn region cssStringQQ start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=cssUnicodeEscape,cssSpecialCharQQ
-" syn region cssStringQ start=+'+ skip=+\\\\\|\\'+ end=+'+ contains=cssUnicodeEscape,cssSpecialCharQ
 
 " Vendor Prefix
 syn match cssVendor contained "-\(webkit\|moz\|o\|ms\)-"
@@ -526,8 +525,9 @@ syn region styledInterpolation start=+$(+ end=+)+ keepend contained contains=sty
 syn match styledInterpolationModule "\<\u\(\w\|'\)*\( *\. *\u\(\w\|'\)*\)*" contained skipwhite skipempty
 
 " Styled ppx region
-syn region cssDefinition transparent matchgroup=cssBraces start=+"+ skip=+\\\\\|\\"+ end=+"+  contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise,styledInterpolation fold
-syn region cssDefinition transparent matchgroup=cssBraces start="{\z\([a-z_]*\)|" end="|\z1}" contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise,styledInterpolation fold
+syn region cssDefinition transparent start=+`+ end=+`+ keepend  contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise,styledInterpolation fold
+syn region cssDefinition transparent start=+"+ skip=+\\\\\|\\"+ end=+"+  contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise,styledInterpolation fold
+syn region cssDefinition transparent start="{\z\([a-z_]*\)|" end="|\z1}" contains=cssTagName,cssAttributeSelector,cssClassName,cssIdentifier,cssAtRule,cssAttrRegion,css.*Prop,cssComment,cssValue.*,cssColor,cssURL,cssImportant,cssCustomProp,cssError,cssStringQ,cssFunction,cssUnicodeEscape,cssVendor,cssDefinition,cssHacks,cssNoise,styledInterpolation fold
 
 " if main_syntax == "css"
 "   syn sync minlines=10
